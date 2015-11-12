@@ -101,7 +101,6 @@ var Engine = function(){
         return retour;
     };
 
-
     function TesterJuxtaposition(position, couleur){
         var IsGood = true;
 
@@ -136,4 +135,17 @@ var Engine = function(){
         return IsGood;
     };
 
+    this.testerCouleurCoin = function(couleur){
+        var retour = false;
+
+        if((plateau[0][0] == couleur) || (plateau[0][5] == couleur) || (plateau[5][0] == couleur) || (plateau[5][5] == couleur))
+        {
+            retour = true;
+            console.log("La couleur existe dans les coins");
+        }
+        else
+            console.log("La bille de couleur n'existe pas dans les coins");
+
+        return retour;
+    }
 };
