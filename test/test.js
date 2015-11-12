@@ -11,3 +11,7 @@ PalettoTestCase.prototype.testHistoire1 = function(){
 PalettoTestCase.prototype.testHistoire2 = function(){
     assertTrue(monPlateau.testerCouleurCoin("Y"));
 };
+
+PalettoTestCase.prototype.testHistoire3 = function(){
+    assertTrue(monPlateau.EnleverBille("a6", 1));
+};
