@@ -4,6 +4,8 @@ var Engine = function(){
     var plateau;
     var nbBille = 0;
 
+    var joueur1 = "";
+
     this.init = function(){
         plateau = new Array(6);
         for(var i = 0; i < plateau.length ; i++)
@@ -147,5 +149,25 @@ var Engine = function(){
             console.log("La bille de couleur n'existe pas dans les coins");
 
         return retour;
-    }
-};
+    };
+
+    this.EnleverBille = function(position , joueur) {
+        var x = position.charCodeAt(1) - 49;
+        var y = position.charCodeAt(0) - 97;
+
+        var retour = false;
+
+        if(plateau[x][y] != "o")
+        {
+            joueur1 += plateau[x][y]+";";
+            retour = true;
+            console.log("Le joueur "+joueur+" a enlever la bille "+plateau[x][y] + " de la case "+position);
+        }
+        else
+        {
+            retour = false;
+            console.log("La case est déjà vide");
+        }
+        return retour;
+    };
+}
