@@ -24,6 +24,7 @@ var Engine = function(){
 
         // COLONNE 1
         this.placerBille("a1" , "N");
+        //this.placerBille("a2" , "N"); // TESTER HISTOIRE 2
         this.placerBille("a2" , "Y");
         this.placerBille("a3" , "B");
         this.placerBille("a4" , "R");
@@ -81,16 +82,58 @@ var Engine = function(){
         var x = position.charCodeAt(1) - 49;
         var y = position.charCodeAt(0) - 97;
 
-        if(plateau[x][y] == "o")
-        {
-            plateau[x][y] = couleurBille;
-            retour = true;
-            console.log("Le joueur "+  couleur + " a placer sur [" + position.charAt(0) + "][" + position.charAt(1) + "] ");
-            nbBille++;
+        if(plateau[x][y] == "o") {
+            if (TesterJuxtaposition(position, couleur) == true)
+            {
+                plateau[x][y] = couleurBille;
+                retour = true;
+                console.log("Le joueur " + couleur + " a placer sur [" + position.charAt(0) + "][" + position.charAt(1) + "] ");
+                nbBille++;
+            }
+            else
+            {
+                console.log("Une autre bille de la meme couleur est deja positionner a cote.");
+            }
         }
         else
             console.log("IMPOSSIBLE : Le case ["+ position.charAt(0) + "][" + position.charAt(1) + "] est deja occupe");
 
         return retour;
     };
+
+
+    function TesterJuxtaposition(position, couleur){
+        var IsGood = true;
+
+        var x = position.charCodeAt(1) - 49;
+        var y = position.charCodeAt(0) - 97;
+
+        if(x > 0)
+        {
+            if(plateau[x-1][y] == couleur)
+                IsGood = false;
+        }
+
+        if(x < 5)
+        {
+            if(plateau[x+1][y] == couleur)
+                IsGood = false;
+        }
+
+
+        if(y > 0)
+        {
+            if(plateau[x][y-1] == couleur)
+                IsGood = false;
+        }
+
+        if(y < 5)
+        {
+            if(plateau[x][y+1] == couleur)
+                IsGood = false;
+        }
+
+        return IsGood;
+    };
+
 };
