@@ -162,6 +162,7 @@ var Engine = function(){
             joueur1 += plateau[x][y]+";";
             retour = true;
             console.log("Le joueur "+joueur+" a enlever la bille "+plateau[x][y] + " de la case "+position);
+            this.NbBilleJoueur(1);
         }
         else
         {
@@ -169,5 +170,43 @@ var Engine = function(){
             console.log("La case est déjà vide");
         }
         return retour;
+    };
+
+    this.NbBilleJoueur = function(joueur) {
+
+        var noir = 0;
+        var vert = 0;
+        var blanc = 0;
+        var bleu = 0;
+        var rouge = 0;
+        var jaune = 0;
+
+        if(joueur == 1)
+        {
+            var chaineNbBilleJoueur = joueur1.split(";");
+            for(var i = 0; i < chaineNbBilleJoueur.length ; i++)
+            {
+                if(chaineNbBilleJoueur[i] == "N")
+                    noir++;
+
+                if(chaineNbBilleJoueur[i] == "G")
+                    vert++;
+
+                if(chaineNbBilleJoueur[i] == "W")
+                    blanc++;
+
+                if(chaineNbBilleJoueur[i] == "B")
+                    bleu++;
+
+                if(chaineNbBilleJoueur[i] == "R")
+                    rouge++;
+
+                if(chaineNbBilleJoueur[i] == "Y")
+                    jaune++;
+            }
+        }
+
+        console.log("Le joueur "+joueur+ " a  N:"+noir+" G:"+vert+" W:"+blanc+" B:"+bleu+" R:"+rouge+ " Y:"+jaune);
+
     };
 }
