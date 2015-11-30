@@ -156,6 +156,14 @@ var Engine = function(){
 
     function recupererCouleurDisponible() {
 
+        console.log("RECUPERER LISTE BILLE VOISINE A1");
+        var listebille = RecupererListeBilleVoisine("a1");
+
+        for(var p= 0; p < listebille.length ; p++)
+        {
+            console.log(" - "+listebille[p]);
+        }
+
         var couleurDispo = new Array();
         var BilleEnlevable = new Array();
 
@@ -166,11 +174,10 @@ var Engine = function(){
                 var nbbille = NbBilleVoisine(i,o);
                 if(nbbille < 3)
                 {
-                    console.log("["+i+"]["+o+"] : Il y a "+nbbille+" bille voisines");
-                    console.log("On ajoute la couleur" + plateau[i][o]);
+                   //console.log("[" + i + "][" + o + "] : Il y a " + nbbille + " bille voisines");
 
                     couleurDispo.push(plateau[i][o]);
-                    BilleEnlevable.push(String.fromCharCode(i+97)+""+(o+1));
+                    BilleEnlevable.push(String.fromCharCode(i + 97) + "" + (o + 1));
 
                 }
             }
@@ -186,14 +193,10 @@ var Engine = function(){
     };
 
     function NbBilleVoisine(posX, posY) {
-        //var x = position.charCodeAt(1) - 49;
-        //var y = position.charCodeAt(0) - 97;
         var x = posX;
         var y = posY;
 
         var NbbilleVoisine = 0;
-
-
 
         if (x > 0) {
             if (plateau[x - 1][y] == "o") {
@@ -232,6 +235,40 @@ var Engine = function(){
 
     };
 
+    function RecupererListeBilleVoisine(position){
+        var x = position.charCodeAt(1) - 49;
+        var y = position.charCodeAt(0) - 97;
+
+        var listeBilleVoisine = new Array();
+
+
+        if (x > 0) {
+            if (plateau[x - 1][y] != "o") {
+                listeBilleVoisine.push(String.fromCharCode(x-1+97)+""+(y+1));
+            }
+        }
+
+        if (x < 5) {
+            if (plateau[x + 1][y] != "o") {
+                listeBilleVoisine.push(String.fromCharCode(x+1+97)+""+(y+1));
+            }
+        }
+
+        if (y > 0) {
+            if (plateau[x][y - 1] != "o") {
+                listeBilleVoisine.push(String.fromCharCode(x+97)+""+(y-1+1));
+            }
+        }
+
+        if (y < 5) {
+            if (plateau[x][y + 1] != "o") {
+                listeBilleVoisine.push(String.fromCharCode(x+97)+""+(y+1+1));
+            }
+        }
+
+        return listeBilleVoisine;
+    }
+
     this.EnleverBille = function(position , joueur) {
         var x = position.charCodeAt(1) - 49;
         var y = position.charCodeAt(0) - 97;
@@ -239,24 +276,47 @@ var Engine = function(){
         var retour = false;
 
         var ListeBilleDisponible =  recupererCouleurDisponible();
+        var ListeBilleVoisinePrincipal =   RecupererListeBilleVoisine(position);
 
         if(ListeBilleDisponible.indexOf(position) != -1)
         {
-            console.log("on peut supprimer la bille");
-        }
-        if(plateau[x][y] != "o")
-        {
-            joueur1 += plateau[x][y]+";";
-            plateau[x][y] = "o";
-            retour = true;
-            console.log("Le joueur "+joueur+" a enlever la bille "+plateau[x][y] + " de la case "+position);
-            this.NbBilleJoueur(1);
+            if(ListeBilleVoisinePrincipal.length == 2) {
+                var voisin1 = RecupererListeBilleVoisine(ListeBilleVoisinePrincipal[0].charAt(0) + "" + ListeBilleVoisinePrincipal[0].charAt(1));
+                var voisin2 = RecupererListeBilleVoisine(ListeBilleVoisinePrincipal[1].charAt(0) + "" + ListeBilleVoisinePrincipal[1].charAt(1));
+
+                for (var a = 0; a < voisin1.length; a++) {
+                    if (voisin1.indexOf(voisin2[a]) != -1) {
+                        // IL EXISTE DES VOISIN COMMUN
+                        console.log("----------- IL Y A UN VOISIN COMMUN " + voisin2[a]);
+                        console.log("on peut supprimer la bille");
+                    }
+                    else
+                    {
+                        console.log("LA BILLE NE PEUT PAS ETRE ENLEVER, C'EST UNE BILLE PILLIER !");
+                    }
+                }
+            }
+
+            if(plateau[x][y] != "o")
+            {
+                joueur1 += plateau[x][y]+";";
+                plateau[x][y] = "o";
+                retour = true;
+                console.log("Le joueur "+joueur+" a enlever la bille "+plateau[x][y] + " de la case "+position);
+                this.NbBilleJoueur(1);
+            }
+            else
+            {
+                retour = false;
+                console.log("La case est déjà vide");
+            }
         }
         else
         {
             retour = false;
-            console.log("La case est déjà vide");
         }
+
+
         return retour;
     };
 
@@ -298,3 +358,13 @@ var Engine = function(){
 
     };
 };
+
+/*
+Utiliser la fonction Recuperer liste bille voisine
+Calcule combien les bille principale avec la fonction bille voisine
+Avant de supprimer un bille il faut:
+    Vérifier que la bille à moins de 3 voisin (Créer fonction qui compte le nombre de bille à partir de la fonction (Liste bille voisine))
+    SI il a moin de 3 voisin on vérifie que la bille prinpale n'est pas porteuse du plateau
+
+
+ */
