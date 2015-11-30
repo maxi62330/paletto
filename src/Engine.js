@@ -5,6 +5,7 @@ var Engine = function(){
     var nbBille = 0;
 
     var joueur1 = "";
+    var joueur2 = "";
 
     this.init = function(){
         plateau = new Array(6);
@@ -297,11 +298,17 @@ var Engine = function(){
 
             if(plateau[x][y] != "o")
             {
-                joueur1 += plateau[x][y]+";";
-                plateau[x][y] = "o";
+
+                if(joueur == 1)
+                    joueur1 += plateau[x][y]+";";
+
+                if(joueur == 2)
+                    joueur2 += plateau[x][y]+";";
+
                 retour = true;
                 console.log("Le joueur "+joueur+" a enlever la bille "+plateau[x][y] + " de la case "+position);
-                this.NbBilleJoueur(1);
+                plateau[x][y] = "o";
+                this.AfficheNbBilleJoueur(joueur);
             }
             else
             {
@@ -312,13 +319,15 @@ var Engine = function(){
         else
         {
             retour = false;
+            console.log("La case est deja vide");
+
         }
 
 
         return retour;
     };
 
-    this.NbBilleJoueur = function(joueur) {
+    this.AfficheNbBilleJoueur = function(joueur) {
 
         var noir = 0;
         var vert = 0;
@@ -327,42 +336,34 @@ var Engine = function(){
         var rouge = 0;
         var jaune = 0;
 
+        var chaineNbBilleJoueur = "";
+
         if(joueur == 1)
+            chaineNbBilleJoueur = joueur1.split(";");
+
+        if(joueur == 2)
+            chaineNbBilleJoueur = joueur2.split(";");
+
+        for(var i = 0; i < chaineNbBilleJoueur.length ; i++)
         {
-            var chaineNbBilleJoueur = joueur1.split(";");
-            for(var i = 0; i < chaineNbBilleJoueur.length ; i++)
-            {
-                if(chaineNbBilleJoueur[i] == "N")
-                    noir++;
+            if(chaineNbBilleJoueur[i] == "N")
+                noir++;
 
-                if(chaineNbBilleJoueur[i] == "G")
-                    vert++;
+            if(chaineNbBilleJoueur[i] == "G")
+                vert++;
 
-                if(chaineNbBilleJoueur[i] == "W")
-                    blanc++;
+            if(chaineNbBilleJoueur[i] == "W")
+                blanc++;
 
-                if(chaineNbBilleJoueur[i] == "B")
-                    bleu++;
+            if(chaineNbBilleJoueur[i] == "B")
+                bleu++;
 
-                if(chaineNbBilleJoueur[i] == "R")
-                    rouge++;
+            if(chaineNbBilleJoueur[i] == "R")
+                rouge++;
 
-                if(chaineNbBilleJoueur[i] == "Y")
-                    jaune++;
-            }
+            if(chaineNbBilleJoueur[i] == "Y")
+                jaune++;
         }
-
         console.log("Le joueur "+joueur+ " a  N:"+noir+" G:"+vert+" W:"+blanc+" B:"+bleu+" R:"+rouge+ " Y:"+jaune);
-
     };
 };
-
-/*
-Utiliser la fonction Recuperer liste bille voisine
-Calcule combien les bille principale avec la fonction bille voisine
-Avant de supprimer un bille il faut:
-    Vérifier que la bille à moins de 3 voisin (Créer fonction qui compte le nombre de bille à partir de la fonction (Liste bille voisine))
-    SI il a moin de 3 voisin on vérifie que la bille prinpale n'est pas porteuse du plateau
-
-
- */
