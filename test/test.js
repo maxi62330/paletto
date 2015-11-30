@@ -20,3 +20,7 @@ PalettoTestCase.prototype.testHistoire4 = function(){
     assertTrue(monPlateau.EnleverBille("a1", 2));
     assertTrue(monPlateau.EnleverBille("f6", 2));
 };
+
+PalettoTestCase.prototype.testHistoire5 = function(){
+    assertFalse(monPlateau.EnleverBille("c3", 1));
+};
