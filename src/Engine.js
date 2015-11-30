@@ -108,29 +108,27 @@ var Engine = function(){
         var x = position.charCodeAt(1) - 49;
         var y = position.charCodeAt(0) - 97;
 
-        if(x > 0)
-        {
-            if(plateau[x-1][y] == couleur)
-                IsGood = false;
-        }
+        if(couleur != "o") {
+            if (x > 0) {
+                if (plateau[x - 1][y] == couleur)
+                    IsGood = false;
+            }
 
-        if(x < 5)
-        {
-            if(plateau[x+1][y] == couleur)
-                IsGood = false;
-        }
+            if (x < 5) {
+                if (plateau[x + 1][y] == couleur)
+                    IsGood = false;
+            }
 
 
-        if(y > 0)
-        {
-            if(plateau[x][y-1] == couleur)
-                IsGood = false;
-        }
+            if (y > 0) {
+                if (plateau[x][y - 1] == couleur)
+                    IsGood = false;
+            }
 
-        if(y < 5)
-        {
-            if(plateau[x][y+1] == couleur)
-                IsGood = false;
+            if (y < 5) {
+                if (plateau[x][y + 1] == couleur)
+                    IsGood = false;
+            }
         }
 
         return IsGood;
