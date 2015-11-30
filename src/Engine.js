@@ -25,7 +25,7 @@ var Engine = function(){
         // Jaune : Y
 
         // COLONNE 1
-        this.placerBille("a1" , "N");
+        this.placerBille("a1" , "N"); // N
         //this.placerBille("a2" , "N"); // TESTER HISTOIRE 2
         this.placerBille("a2" , "Y");
         this.placerBille("a3" , "B");
@@ -34,7 +34,7 @@ var Engine = function(){
         this.placerBille("a6" , "Y");
 
         // COLONNE 2
-        this.placerBille("b1" , "G");
+        this.placerBille("b1" , "G"); // G
         this.placerBille("b2" , "W");
         this.placerBille("b3" , "Y");
         this.placerBille("b4" , "N");
@@ -42,7 +42,7 @@ var Engine = function(){
         this.placerBille("b6" , "B");
 
         // COLONNE 3
-        this.placerBille("c1" , "W");
+        this.placerBille("c1" , "W"); // W
         this.placerBille("c2" , "G");
         this.placerBille("c3" , "B");
         this.placerBille("c4" , "R");
@@ -50,7 +50,7 @@ var Engine = function(){
         this.placerBille("c6" , "N");
 
         // COLONNE 4
-        this.placerBille("d1" , "B");
+        this.placerBille("d1" , "B"); // B
         this.placerBille("d2" , "R");
         this.placerBille("d3" , "W");
         this.placerBille("d4" , "G");
@@ -58,7 +58,7 @@ var Engine = function(){
         this.placerBille("d6" , "R");
 
         // COLONNE 5
-        this.placerBille("e1" , "R");
+        this.placerBille("e1" , "R"); // R
         this.placerBille("e2" , "Y");
         this.placerBille("e3" , "N");
         this.placerBille("e4" , "B");
@@ -66,7 +66,7 @@ var Engine = function(){
         this.placerBille("e6" , "G");
 
         // COLONNE 6
-        this.placerBille("f1" , "W");
+        this.placerBille("f1" , "W"); //W
         this.placerBille("f2" , "B");
         this.placerBille("f3" , "R");
         this.placerBille("f4" , "W");
@@ -89,7 +89,7 @@ var Engine = function(){
             {
                 plateau[x][y] = couleurBille;
                 retour = true;
-                console.log("Le joueur " + couleur + " a placer sur [" + position.charAt(0) + "][" + position.charAt(1) + "] ");
+                console.log("La bille " + couleur + " a ete placer sur [" + position.charAt(0) + "][" + position.charAt(1) + "] ");
                 nbBille++;
             }
             else
@@ -137,18 +137,99 @@ var Engine = function(){
         return IsGood;
     };
 
-    this.testerCouleurCoin = function(couleur){
+    this.testerCouleurDisponible = function(couleur){
         var retour = false;
 
         if((plateau[0][0] == couleur) || (plateau[0][5] == couleur) || (plateau[5][0] == couleur) || (plateau[5][5] == couleur))
         {
             retour = true;
-            console.log("La couleur existe dans les coins");
+            console.log("La couleur "+couleur+" est disponible");
         }
         else
-            console.log("La bille de couleur n'existe pas dans les coins");
+            console.log("La bille de couleur "+couleur+" n'est pas disponible");
+
+
+
 
         return retour;
+    };
+
+    function recupererCouleurDisponible() {
+
+        var couleurDispo = new Array();
+        var BilleEnlevable = new Array();
+
+        for(var i = 0; i < plateau.length ; i++)
+        {
+            for(var o = 0; o < 6 ; o++)
+            {
+                var nbbille = NbBilleVoisine(i,o);
+                if(nbbille < 3)
+                {
+                    console.log("["+i+"]["+o+"] : Il y a "+nbbille+" bille voisines");
+                    console.log("On ajoute la couleur" + plateau[i][o]);
+
+                    couleurDispo.push(plateau[i][o]);
+                    BilleEnlevable.push(String.fromCharCode(i+97)+""+(o+1));
+
+                }
+            }
+        }
+        console.log("");
+        console.log("COULEUR DISPONIBLE A LA SELECTION");
+        for(var u = 0; u<couleurDispo.length ; u++)
+        {
+            console.log("-- "+couleurDispo[u] +" " + BilleEnlevable[u]);
+        }
+
+        return BilleEnlevable;
+    };
+
+    function NbBilleVoisine(posX, posY) {
+        //var x = position.charCodeAt(1) - 49;
+        //var y = position.charCodeAt(0) - 97;
+        var x = posX;
+        var y = posY;
+
+        var NbbilleVoisine = 0;
+
+
+
+        if (x > 0) {
+            if (plateau[x - 1][y] == "o") {
+                NbbilleVoisine++;
+            }
+        }
+        else
+            NbbilleVoisine++;
+
+        if (x < 5) {
+            if (plateau[x + 1][y] == "o") {
+                NbbilleVoisine++;
+            }
+        }
+        else
+            NbbilleVoisine++;
+
+        if (y > 0) {
+            if (plateau[x][y - 1] == "o") {
+                NbbilleVoisine++;
+            }
+        }
+        else
+            NbbilleVoisine++;
+
+        if (y < 5) {
+            if (plateau[x][y + 1] == "o") {
+                NbbilleVoisine++;
+            }
+        }
+        else
+            NbbilleVoisine++;
+
+
+        return (4 - NbbilleVoisine);
+
     };
 
     this.EnleverBille = function(position , joueur) {
@@ -157,9 +238,16 @@ var Engine = function(){
 
         var retour = false;
 
+        var ListeBilleDisponible =  recupererCouleurDisponible();
+
+        if(ListeBilleDisponible.indexOf(position) != -1)
+        {
+            console.log("on peut supprimer la bille");
+        }
         if(plateau[x][y] != "o")
         {
             joueur1 += plateau[x][y]+";";
+            plateau[x][y] = "o";
             retour = true;
             console.log("Le joueur "+joueur+" a enlever la bille "+plateau[x][y] + " de la case "+position);
             this.NbBilleJoueur(1);
@@ -209,4 +297,4 @@ var Engine = function(){
         console.log("Le joueur "+joueur+ " a  N:"+noir+" G:"+vert+" W:"+blanc+" B:"+bleu+" R:"+rouge+ " Y:"+jaune);
 
     };
-}
+};

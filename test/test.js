@@ -9,9 +9,14 @@ PalettoTestCase.prototype.testHistoire1 = function(){
 };
 
 PalettoTestCase.prototype.testHistoire2 = function(){
-    assertTrue(monPlateau.testerCouleurCoin("Y"));
+    assertTrue(monPlateau.testerCouleurDisponible("Y"));
 };
 
 PalettoTestCase.prototype.testHistoire3 = function(){
     assertTrue(monPlateau.EnleverBille("a6", 1));
+};
+
+PalettoTestCase.prototype.testHistoire4 = function(){
+    assertTrue(monPlateau.EnleverBille("a1", 2));
+    assertTrue(monPlateau.EnleverBille("f6", 2));
 };
