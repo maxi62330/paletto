@@ -26,7 +26,7 @@ var Engine = function(){
         // Jaune : Y
 
         // COLONNE 1
-        this.placerBille("a1" , "N"); // N
+        this.placerBille("a1" , "N");
         //this.placerBille("a2" , "N"); // TESTER HISTOIRE 2
         this.placerBille("a2" , "Y");
         this.placerBille("a3" , "B");
@@ -35,7 +35,7 @@ var Engine = function(){
         this.placerBille("a6" , "Y");
 
         // COLONNE 2
-        this.placerBille("b1" , "G"); // G
+        this.placerBille("b1" , "G");
         this.placerBille("b2" , "W");
         this.placerBille("b3" , "Y");
         this.placerBille("b4" , "N");
@@ -43,7 +43,7 @@ var Engine = function(){
         this.placerBille("b6" , "B");
 
         // COLONNE 3
-        this.placerBille("c1" , "W"); // W
+        this.placerBille("c1" , "W");
         this.placerBille("c2" , "G");
         this.placerBille("c3" , "B");
         this.placerBille("c4" , "R");
@@ -51,7 +51,7 @@ var Engine = function(){
         this.placerBille("c6" , "N");
 
         // COLONNE 4
-        this.placerBille("d1" , "B"); // B
+        this.placerBille("d1" , "B");
         this.placerBille("d2" , "R");
         this.placerBille("d3" , "W");
         this.placerBille("d4" , "G");
@@ -59,7 +59,7 @@ var Engine = function(){
         this.placerBille("d6" , "R");
 
         // COLONNE 5
-        this.placerBille("e1" , "R"); // R
+        this.placerBille("e1" , "R");
         this.placerBille("e2" , "Y");
         this.placerBille("e3" , "N");
         this.placerBille("e4" , "B");
@@ -67,7 +67,7 @@ var Engine = function(){
         this.placerBille("e6" , "G");
 
         // COLONNE 6
-        this.placerBille("f1" , "W"); //W
+        this.placerBille("f1" , "W");
         this.placerBille("f2" , "B");
         this.placerBille("f3" , "R");
         this.placerBille("f4" , "W");
@@ -82,8 +82,8 @@ var Engine = function(){
         var retour = false;
         var couleurBille = couleur;
 
-        var x = position.charCodeAt(1) - 49;
-        var y = position.charCodeAt(0) - 97;
+        var x = position.charCodeAt(0) - 97;
+        var y = position.charCodeAt(1) - 49;
 
         if(plateau[x][y] == "o") {
             if (TesterJuxtaposition(position, couleur) == true)
@@ -107,8 +107,8 @@ var Engine = function(){
     function TesterJuxtaposition(position, couleur){
         var IsGood = true;
 
-        var x = position.charCodeAt(1) - 49;
-        var y = position.charCodeAt(0) - 97;
+        var x = position.charCodeAt(0) - 97;
+        var y = position.charCodeAt(1) - 49;
 
         if(couleur != "o") {
             if (x > 0) {
@@ -136,7 +136,7 @@ var Engine = function(){
         return IsGood;
     };
 
-    this.testerCouleurDisponible = function(couleur){
+    this.testerCouleurCoinDisponible = function(couleur){
         var retour = false;
 
         if((plateau[0][0] == couleur) || (plateau[0][5] == couleur) || (plateau[5][0] == couleur) || (plateau[5][5] == couleur))
@@ -147,158 +147,111 @@ var Engine = function(){
         else
             console.log("La bille de couleur "+couleur+" n'est pas disponible");
 
-
-
-
         return retour;
     };
 
-    function recupererCouleurDisponible() {
+    function billeDisponibleALaSelection() {
 
-        console.log("RECUPERER LISTE BILLE VOISINE A1");
-        var listebille = RecupererListeBilleVoisine("a1");
-
-        for(var p= 0; p < listebille.length ; p++)
-        {
-            console.log(" - "+listebille[p]);
-        }
-
-        var couleurDispo = new Array();
-        var BilleEnlevable = new Array();
+        var couleurDispo = new Array();  // Listes des couleurs pouvant être enlever
+        var listeBilleEnlevable = new Array(); // Listes des billes pouvant être enlever
 
         for(var i = 0; i < plateau.length ; i++)
         {
             for(var o = 0; o < 6 ; o++)
             {
-                var nbbille = NbBilleVoisine(i,o);
-                if(nbbille < 3)
-                {
-                   //console.log("[" + i + "][" + o + "] : Il y a " + nbbille + " bille voisines");
-
-                    couleurDispo.push(plateau[i][o]);
-                    BilleEnlevable.push(String.fromCharCode(i + 97) + "" + (o + 1));
-
+                if(plateau[i][o] != "o") {
+                    var nbbille = RecupListBilleVoisine(String.fromCharCode(i + 97, o + 49)).length;
+                    if (nbbille < 3) {
+                        couleurDispo.push(plateau[i][o]);
+                        listeBilleEnlevable.push(String.fromCharCode(i + 97, o + 49));
+                    }
                 }
             }
         }
+
+        AfficherBilleDisponibleSelection(couleurDispo , listeBilleEnlevable);
+
+        return listeBilleEnlevable;
+    };
+
+    function AfficherBilleDisponibleSelection(couleurDispo , listeBilleEnlevable) {
         console.log("");
-        console.log("COULEUR DISPONIBLE A LA SELECTION");
+        console.log("BILLE DISPONIBLE A LA SELECTION");
         for(var u = 0; u<couleurDispo.length ; u++)
         {
-            console.log("-- "+couleurDispo[u] +" " + BilleEnlevable[u]);
+            console.log("-- "+couleurDispo[u] +" " + listeBilleEnlevable[u]);
         }
+    }
 
-        return BilleEnlevable;
-    };
+    function RecupListBilleVoisine(position){
+        var x = position.charCodeAt(0) - 97;// a
+        var y = position.charCodeAt(1) - 49;// 1
 
-    function NbBilleVoisine(posX, posY) {
-        var x = posX;
-        var y = posY;
-
-        var NbbilleVoisine = 0;
-
-        if (x > 0) {
-            if (plateau[x - 1][y] == "o") {
-                NbbilleVoisine++;
-            }
-        }
-        else
-            NbbilleVoisine++;
-
-        if (x < 5) {
-            if (plateau[x + 1][y] == "o") {
-                NbbilleVoisine++;
-            }
-        }
-        else
-            NbbilleVoisine++;
-
-        if (y > 0) {
-            if (plateau[x][y - 1] == "o") {
-                NbbilleVoisine++;
-            }
-        }
-        else
-            NbbilleVoisine++;
-
-        if (y < 5) {
-            if (plateau[x][y + 1] == "o") {
-                NbbilleVoisine++;
-            }
-        }
-        else
-            NbbilleVoisine++;
-
-
-        return (4 - NbbilleVoisine);
-
-    };
-
-    function RecupererListeBilleVoisine(position){
-        var x = position.charCodeAt(1) - 49;
-        var y = position.charCodeAt(0) - 97;
-
-        var listeBilleVoisine = new Array();
-
+        var listeBilleVoisine = new Array(); // forme :  "c3:B"   position:couleur
 
         if (x > 0) {
             if (plateau[x - 1][y] != "o") {
-                listeBilleVoisine.push(String.fromCharCode(x-1+97)+""+(y+1));
+            listeBilleVoisine.push(String.fromCharCode(x-1+97)+""+(y+1)+":"+plateau[y][x-1] );
             }
         }
 
         if (x < 5) {
             if (plateau[x + 1][y] != "o") {
-                listeBilleVoisine.push(String.fromCharCode(x+1+97)+""+(y+1));
+            listeBilleVoisine.push(String.fromCharCode(x+1+97)+""+(y+1)+":"+plateau[y][x+1] );
             }
         }
 
         if (y > 0) {
             if (plateau[x][y - 1] != "o") {
-                listeBilleVoisine.push(String.fromCharCode(x+97)+""+(y-1+1));
+            listeBilleVoisine.push(String.fromCharCode(x+97)+""+(y-1+1)+":"+plateau[y-1][x] );
             }
         }
 
         if (y < 5) {
             if (plateau[x][y + 1] != "o") {
-                listeBilleVoisine.push(String.fromCharCode(x+97)+""+(y+1+1));
+            listeBilleVoisine.push(String.fromCharCode(x+97)+""+(y+1+1)+":"+plateau[y+1][x] );
             }
         }
 
         return listeBilleVoisine;
-    }
+    };
 
     this.EnleverBille = function(position , joueur) {
-        var x = position.charCodeAt(1) - 49;
-        var y = position.charCodeAt(0) - 97;
+        var x = position.charCodeAt(0) - 97;
+        var y = position.charCodeAt(1) - 49;
 
         var retour = false;
 
-        var ListeBilleDisponible =  recupererCouleurDisponible();
-        var ListeBilleVoisinePrincipal =   RecupererListeBilleVoisine(position);
+        /*var ListeBilleVoisinePrincipal =   RecupererListeBilleVoisine("b5");
+        for(var p = 0; p < ListeBilleVoisinePrincipal.length ; p++){
+            console.log(("BILLE VOISINE DISPO "+ListeBilleVoisinePrincipal[p]));
+        }*/
 
-        if(ListeBilleDisponible.indexOf(position) != -1)
+        //var ListeBilleDisponibleSelection =  null;
+        var ListeBilleDisponibleSelection = billeDisponibleALaSelection();
+        //var ListeBilleVoisinePrincipal =   RecupererListeBilleVoisine(position);
+
+        if(ListeBilleDisponibleSelection.indexOf(position) != -1)
         {
-            if(ListeBilleVoisinePrincipal.length == 2) {
-                var voisin1 = RecupererListeBilleVoisine(ListeBilleVoisinePrincipal[0].charAt(0) + "" + ListeBilleVoisinePrincipal[0].charAt(1));
-                var voisin2 = RecupererListeBilleVoisine(ListeBilleVoisinePrincipal[1].charAt(0) + "" + ListeBilleVoisinePrincipal[1].charAt(1));
+        //    if(ListeBilleVoisinePrincipal.length == 2) {
+        //        var voisin1 = RecupererListeBilleVoisine(ListeBilleVoisinePrincipal[0].charAt(0) + "" + ListeBilleVoisinePrincipal[0].charAt(1));
+        //        var voisin2 = RecupererListeBilleVoisine(ListeBilleVoisinePrincipal[1].charAt(0) + "" + ListeBilleVoisinePrincipal[1].charAt(1));
 
-                for (var a = 0; a < voisin1.length; a++) {
-                    if (voisin1.indexOf(voisin2[a]) != -1) {
+        //        for (var a = 0; a < voisin1.length; a++) {
+        //            if (voisin1.indexOf(voisin2[a]) != -1) {
                         // IL EXISTE DES VOISIN COMMUN
-                        console.log("----------- IL Y A UN VOISIN COMMUN " + voisin2[a]);
-                        console.log("on peut supprimer la bille");
-                    }
-                    else
-                    {
-                        console.log("LA BILLE NE PEUT PAS ETRE ENLEVER, C'EST UNE BILLE PILLIER !");
-                    }
-                }
-            }
+        //                console.log("----------- IL Y A UN VOISIN COMMUN " + voisin2[a]);
+        //                console.log("on peut supprimer la bille");
+        //            }
+        //            else
+        //            {
+        //                console.log("LA BILLE NE PEUT PAS ETRE ENLEVER, C'EST UNE BILLE PILLIER !");
+        //            }
+        //        }
+        //    }
 
             if(plateau[x][y] != "o")
             {
-
                 if(joueur == 1)
                     joueur1 += plateau[x][y]+";";
 
@@ -306,6 +259,7 @@ var Engine = function(){
                     joueur2 += plateau[x][y]+";";
 
                 retour = true;
+                //AfficheJeu();
                 console.log("Le joueur "+joueur+" a enlever la bille "+plateau[x][y] + " de la case "+position);
                 plateau[x][y] = "o";
                 this.AfficheNbBilleJoueur(joueur);
@@ -318,12 +272,8 @@ var Engine = function(){
         }
         else
         {
-            retour = false;
-            console.log("La case est deja vide");
-
+            console.log("LA BILLE N'EST PAS LA LISTE DES BILLES DISPO");
         }
-
-
         return retour;
     };
 
@@ -365,5 +315,22 @@ var Engine = function(){
                 jaune++;
         }
         console.log("Le joueur "+joueur+ " a  N:"+noir+" G:"+vert+" W:"+blanc+" B:"+bleu+" R:"+rouge+ " Y:"+jaune);
+    };
+
+    function AfficheJeu(){
+        var ligne = "";
+        for(var i = 0; i < 6 ; i++)
+        {
+            if(i==3)
+                console.log(" ");
+            for(var o = 0; o < 6 ; o++)
+            {
+                if(o == 3)
+                    ligne = ligne +" ";
+                ligne =  ligne + "["+plateau[i][o]+"]";
+            }
+            console.log(ligne);
+            ligne = "";
+        }
     };
 };
