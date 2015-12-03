@@ -58,3 +58,62 @@ PalettoTestCase.prototype.testHistoire5 = function(){
     console.log("Pret");
     assertFalse(monPlateau.EnleverBille("c3", 1));
 };
+
+PalettoTestCase.prototype.testHistoire6 = function(){
+    assertTrue(monPlateau1.init());
+
+    console.log("");
+    console.log("-------------------  J1  -----------------------");
+    assertTrue(monPlateau1.EnleverBille("a1", 1));
+    assertTrue(monPlateau1.EnleverBille("f6", 1));
+
+    console.log("");
+    console.log("-------------------  J2  -----------------------");
+    assertTrue(monPlateau1.EnleverBille("b1", 2));
+    assertTrue(monPlateau1.EnleverBille("e6", 2));
+    assertTrue(monPlateau1.EnleverBille("f5", 2));
+
+    console.log("");
+    console.log("-------------------  J1  -----------------------");
+    assertTrue(monPlateau1.EnleverBille("a2", 1));
+    assertTrue(monPlateau1.EnleverBille("a6", 1));
+
+    console.log("");
+    console.log("-------------------  J2  -----------------------");
+    assertTrue(monPlateau1.EnleverBille("a3", 2));
+
+    console.log("");
+    console.log("-------------------  J1  -----------------------");
+    assertTrue(monPlateau1.EnleverBille("a5", 1));
+    assertTrue(monPlateau1.EnleverBille("f4", 1));
+    assertTrue(monPlateau1.EnleverBille("f1", 1));
+    assertTrue(monPlateau1.EnleverBille("c1", 1));
+
+    console.log("");
+    console.log("-------------------  J2  -----------------------");
+    assertTrue(monPlateau1.EnleverBille("e1", 2));
+    assertTrue(monPlateau1.EnleverBille("f3", 2));
+    assertTrue(monPlateau1.EnleverBille("d6", 2));
+    assertTrue(monPlateau1.EnleverBille("a4", 2));
+
+    console.log("");
+    console.log("-------------------  J1  -----------------------");
+    assertTrue(monPlateau1.EnleverBille("d1", 1));//d3
+    assertTrue(monPlateau1.EnleverBille("f2", 1));
+    assertTrue(monPlateau1.EnleverBille("b6", 1));
+
+    console.log("");
+    console.log("-------------------  J2  -----------------------");
+    assertTrue(monPlateau1.EnleverBille("b2", 2));//b3
+    assertTrue(monPlateau1.EnleverBille("e2", 2));
+    assertTrue(monPlateau1.EnleverBille("e5", 2));
+
+    console.log("");
+    console.log("-------------------  J1  -----------------------");
+    assertTrue(monPlateau1.EnleverBille("b5", 1));//b4
+    assertTrue(monPlateau1.EnleverBille("c6", 1));
+    assertTrue(monPlateau1.EnleverBille("d5", 1));
+    assertTrue(monPlateau1.EnleverBille("e3", 1));
+
+    assertTrue(monPlateau.VerificationJoueurGagnant(1));
+};

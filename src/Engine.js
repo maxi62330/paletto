@@ -277,8 +277,6 @@ var Engine = function(){
 
 
             }
-            //nbBilleEnCommun >= 2
-
             if(!EstBillePillier)// Dans les 2 voisinages, il faut a tout pris 2 billes en commun, seule que l'on souhaite
             // celle que l'on souhaite enlever et une autre. Sinon la bille est une bille pallier
             {
@@ -353,6 +351,9 @@ var Engine = function(){
                 jaune++;
         }
         console.log("Le joueur "+joueur+ " a  N:"+noir+" G:"+vert+" W:"+blanc+" B:"+bleu+" R:"+rouge+ " Y:"+jaune);
+    };
+
+    this.VerificationJoueurGagnant = function(joueur){
     };
 
     function AfficheJeu(){
