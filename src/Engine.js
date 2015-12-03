@@ -191,25 +191,25 @@ var Engine = function(){
 
         if (x > 0) {
             if (plateau[x - 1][y] != "o") {
-            listeBilleVoisine.push(String.fromCharCode(x-1+97)+""+(y+1)+":"+plateau[y][x-1] );
+            listeBilleVoisine.push(String.fromCharCode(x-1+97)+""+(y+1)+":"+plateau[x-1][y] );
             }
         }
 
         if (x < 5) {
             if (plateau[x + 1][y] != "o") {
-            listeBilleVoisine.push(String.fromCharCode(x+1+97)+""+(y+1)+":"+plateau[y][x+1] );
+            listeBilleVoisine.push(String.fromCharCode(x+1+97)+""+(y+1)+":"+plateau[x+1][y] );
             }
         }
 
         if (y > 0) {
             if (plateau[x][y - 1] != "o") {
-            listeBilleVoisine.push(String.fromCharCode(x+97)+""+(y-1+1)+":"+plateau[y-1][x] );
+            listeBilleVoisine.push(String.fromCharCode(x+97)+""+(y-1+1)+":"+plateau[x][y-1] );
             }
         }
 
         if (y < 5) {
             if (plateau[x][y + 1] != "o") {
-            listeBilleVoisine.push(String.fromCharCode(x+97)+""+(y+1+1)+":"+plateau[y+1][x] );
+            listeBilleVoisine.push(String.fromCharCode(x+97)+""+(y+1+1)+":"+plateau[x][y+1] );
             }
         }
 
@@ -222,52 +222,90 @@ var Engine = function(){
 
         var retour = false;
 
-        /*var ListeBilleVoisinePrincipal =   RecupererListeBilleVoisine("b5");
-        for(var p = 0; p < ListeBilleVoisinePrincipal.length ; p++){
-            console.log(("BILLE VOISINE DISPO "+ListeBilleVoisinePrincipal[p]));
-        }*/
-
-        //var ListeBilleDisponibleSelection =  null;
         var ListeBilleDisponibleSelection = billeDisponibleALaSelection();
-        //var ListeBilleVoisinePrincipal =   RecupererListeBilleVoisine(position);
 
         if(ListeBilleDisponibleSelection.indexOf(position) != -1)
         {
-        //    if(ListeBilleVoisinePrincipal.length == 2) {
-        //        var voisin1 = RecupererListeBilleVoisine(ListeBilleVoisinePrincipal[0].charAt(0) + "" + ListeBilleVoisinePrincipal[0].charAt(1));
-        //        var voisin2 = RecupererListeBilleVoisine(ListeBilleVoisinePrincipal[1].charAt(0) + "" + ListeBilleVoisinePrincipal[1].charAt(1));
+            /////////////////// ESSAI
+            // On recupere la liste des bille voisine à la bille principale
+            var ListeBilleVoisinePrincipal =   RecupListBilleVoisine(position);
+                for(var p = 0; p < ListeBilleVoisinePrincipal.length ; p++){
+                    console.log(("BILLE VOISINE DISPO "+ListeBilleVoisinePrincipal[p]));
+                }
 
-        //        for (var a = 0; a < voisin1.length; a++) {
-        //            if (voisin1.indexOf(voisin2[a]) != -1) {
-                        // IL EXISTE DES VOISIN COMMUN
-        //                console.log("----------- IL Y A UN VOISIN COMMUN " + voisin2[a]);
-        //                console.log("on peut supprimer la bille");
-        //            }
-        //            else
-        //            {
-        //                console.log("LA BILLE NE PEUT PAS ETRE ENLEVER, C'EST UNE BILLE PILLIER !");
-        //            }
-        //        }
-        //    }
+            var nbBilleEnCommun = 0;
+            var EstBillePillier = false;
 
-            if(plateau[x][y] != "o")
+            if(ListeBilleVoisinePrincipal.length == 2)
             {
-                if(joueur == 1)
-                    joueur1 += plateau[x][y]+";";
+                // On recupère les billes voisines des voisines de la bille principale
+                var voisin1 = RecupListBilleVoisine(ListeBilleVoisinePrincipal[0].charAt(0)+""+ListeBilleVoisinePrincipal[0].charAt(1));
+                var voisin2 = RecupListBilleVoisine(ListeBilleVoisinePrincipal[1].charAt(0)+""+ListeBilleVoisinePrincipal[1].charAt(1));
 
-                if(joueur == 2)
-                    joueur2 += plateau[x][y]+";";
+                for(var p = 0; p < voisin1.length ; p++){
+                    console.log(("VOISIN 1 +"+ListeBilleVoisinePrincipal[0]+" :"+voisin1[p]));
+                }
+                for(var p = 0; p < voisin2.length ; p++){
+                    console.log(("VOISIN 2 +"+ListeBilleVoisinePrincipal[1]+" :"+voisin2[p]));
+                }
 
-                retour = true;
-                //AfficheJeu();
-                console.log("Le joueur "+joueur+" a enlever la bille "+plateau[x][y] + " de la case "+position);
-                plateau[x][y] = "o";
-                this.AfficheNbBilleJoueur(joueur);
+                var NbPlusGrandeExploiration; // On prend la solution qui a le plus de bille voisine
+
+                if(voisin1.length > voisin2)
+                    NbPlusGrandeExploiration = voisin1.length;
+                else
+                    NbPlusGrandeExploiration = voisin2.length;
+
+                // On viens comparé les 2 listes des billes voisines à la bille principale ou voir si il y a des doublons
+                for(var ind = 0; ind < NbPlusGrandeExploiration; ind++)
+                {
+                    if(voisin1.indexOf(voisin2[ind]) != -1) // Si une bille est commune au 2 voisinage
+                    {
+                        if(voisin2[ind] != (position+":"+plateau[x][y]))
+                        {
+                            console.log("--------VOSIIN:("+voisin2[ind]+")    POSI:("+position+":"+plateau[x][y]+")");
+                            nbBilleEnCommun++;
+                            console.log("Bille commun" + voisin2[ind]);
+                        }
+                    }
+                }
+
+                if(nbBilleEnCommun == 0)
+                {
+                    EstBillePillier = true;
+                }
+
+
             }
-            else
+            //nbBilleEnCommun >= 2
+
+            if(!EstBillePillier)// Dans les 2 voisinages, il faut a tout pris 2 billes en commun, seule que l'on souhaite
+            // celle que l'on souhaite enlever et une autre. Sinon la bille est une bille pallier
+            {
+
+                if (plateau[x][y] != "o") {
+                    if (joueur == 1)
+                        joueur1 += plateau[x][y] + ";";
+
+                    if (joueur == 2)
+                        joueur2 += plateau[x][y] + ";";
+
+                    retour = true;
+                    AfficheJeu();
+                    console.log("Le joueur " + joueur + " a enlever la bille " + plateau[x][y] + " de la case " + position);
+                    plateau[x][y] = "o";
+                    this.AfficheNbBilleJoueur(joueur);
+                }
+                else {
+                    retour = false;
+                    console.log("La case est déjà vide");
+
+                }
+
+            }else
             {
                 retour = false;
-                console.log("La case est déjà vide");
+                console.log("La bille ne peut pas etre enlevee, c'est une bille pillier");
             }
         }
         else
@@ -327,7 +365,7 @@ var Engine = function(){
             {
                 if(o == 3)
                     ligne = ligne +" ";
-                ligne =  ligne + "["+plateau[i][o]+"]";
+                ligne =  ligne + "["+plateau[o][i]+"]";
             }
             console.log(ligne);
             ligne = "";

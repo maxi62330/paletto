@@ -2,12 +2,12 @@
 
 var PalettoTestCase = TestCase("PalettoTestCase");
 var monPlateau =  new Engine();
+var monPlateau1 =  new Engine();
 
 PalettoTestCase.prototype.testHistoire1 = function(){
     console.log("");
     console.log(" --- HISTOIRE 1 ---");
     assertTrue(monPlateau.init());
-    ///////////////////////assertTrue(monPlateau.RecupListBilleVoisine("d1"));
 };
 
 PalettoTestCase.prototype.testHistoire2 = function(){
