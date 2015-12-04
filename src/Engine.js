@@ -1,19 +1,18 @@
 'use strict';
 
-var Engine = function(){
+var Engine = function () {
     var plateau;
     var nbBille = 0;
 
     var joueur1 = "";
     var joueur2 = "";
+    var joueurGagnantPartie = 0;
 
-    this.init = function(){
+    this.init = function () {
         plateau = new Array(6);
-        for(var i = 0; i < plateau.length ; i++)
-        {
+        for (var i = 0; i < plateau.length; i++) {
             plateau[i] = new Array(6);
-            for(var o = 0; o < 6 ; o++)
-            {
+            for (var o = 0; o < 6; o++) {
                 plateau[i][o] = "o";
             }
         }
@@ -26,91 +25,89 @@ var Engine = function(){
         // Jaune : Y
 
         // COLONNE 1
-        this.placerBille("a1" , "N");
+        this.placerBille("a1", "N");
         //this.placerBille("a2" , "N"); // TESTER HISTOIRE 2
-        this.placerBille("a2" , "Y");
-        this.placerBille("a3" , "B");
-        this.placerBille("a4" , "R");
-        this.placerBille("a5" , "W");
-        this.placerBille("a6" , "Y");
+        this.placerBille("a2", "Y");
+        this.placerBille("a3", "B");
+        this.placerBille("a4", "R");
+        this.placerBille("a5", "W");
+        this.placerBille("a6", "Y");
 
         // COLONNE 2
-        this.placerBille("b1" , "G");
-        this.placerBille("b2" , "W");
-        this.placerBille("b3" , "Y");
-        this.placerBille("b4" , "N");
-        this.placerBille("b5" , "G");
-        this.placerBille("b6" , "B");
+        this.placerBille("b1", "G");
+        this.placerBille("b2", "W");
+        this.placerBille("b3", "Y");
+        this.placerBille("b4", "N");
+        this.placerBille("b5", "G");
+        this.placerBille("b6", "B");
 
         // COLONNE 3
-        this.placerBille("c1" , "W");
-        this.placerBille("c2" , "G");
-        this.placerBille("c3" , "B");
-        this.placerBille("c4" , "R");
-        this.placerBille("c5" , "Y");
-        this.placerBille("c6" , "N");
+        this.placerBille("c1", "W");
+        this.placerBille("c2", "G");
+        this.placerBille("c3", "B");
+        this.placerBille("c4", "R");
+        this.placerBille("c5", "Y");
+        this.placerBille("c6", "N");
 
         // COLONNE 4
-        this.placerBille("d1" , "B");
-        this.placerBille("d2" , "R");
-        this.placerBille("d3" , "W");
-        this.placerBille("d4" , "G");
-        this.placerBille("d5" , "N");
-        this.placerBille("d6" , "R");
+        this.placerBille("d1", "B");
+        this.placerBille("d2", "R");
+        this.placerBille("d3", "W");
+        this.placerBille("d4", "G");
+        this.placerBille("d5", "N");
+        this.placerBille("d6", "R");
 
         // COLONNE 5
-        this.placerBille("e1" , "R");
-        this.placerBille("e2" , "Y");
-        this.placerBille("e3" , "N");
-        this.placerBille("e4" , "B");
-        this.placerBille("e5" , "Y");
-        this.placerBille("e6" , "G");
+        this.placerBille("e1", "R");
+        this.placerBille("e2", "Y");
+        this.placerBille("e3", "N");
+        this.placerBille("e4", "B");
+        this.placerBille("e5", "Y");
+        this.placerBille("e6", "G");
 
         // COLONNE 6
-        this.placerBille("f1" , "W");
-        this.placerBille("f2" , "B");
-        this.placerBille("f3" , "R");
-        this.placerBille("f4" , "W");
-        this.placerBille("f5" , "G");
-        this.placerBille("f6" , "N");
+        this.placerBille("f1", "W");
+        this.placerBille("f2", "B");
+        this.placerBille("f3", "R");
+        this.placerBille("f4", "W");
+        this.placerBille("f5", "G");
+        this.placerBille("f6", "N");
         return true;
     };
 // private attributes and methods
 
 // public methods
-    this.placerBille = function(position, couleur){
+    this.placerBille = function (position, couleur) {
         var retour = false;
         var couleurBille = couleur;
 
         var x = position.charCodeAt(0) - 97;
         var y = position.charCodeAt(1) - 49;
 
-        if(plateau[x][y] == "o") {
-            if (TesterJuxtaposition(position, couleur) == true)
-            {
+        if (plateau[x][y] == "o") {
+            if (TesterJuxtaposition(position, couleur) == true) {
                 plateau[x][y] = couleurBille;
                 retour = true;
                 console.log("La bille " + couleur + " a ete placer sur [" + position.charAt(0) + "][" + position.charAt(1) + "] ");
                 nbBille++;
             }
-            else
-            {
+            else {
                 console.log("Une autre bille de la meme couleur est deja positionner a cote.");
             }
         }
         else
-            console.log("IMPOSSIBLE : Le case ["+ position.charAt(0) + "][" + position.charAt(1) + "] est deja occupe");
+            console.log("IMPOSSIBLE : Le case [" + position.charAt(0) + "][" + position.charAt(1) + "] est deja occupe");
 
         return retour;
     };
 
-    function TesterJuxtaposition(position, couleur){
+    function TesterJuxtaposition(position, couleur) {
         var IsGood = true;
 
         var x = position.charCodeAt(0) - 97;
         var y = position.charCodeAt(1) - 49;
 
-        if(couleur != "o") {
+        if (couleur != "o") {
             if (x > 0) {
                 if (plateau[x - 1][y] == couleur)
                     IsGood = false;
@@ -136,30 +133,27 @@ var Engine = function(){
         return IsGood;
     };
 
-    this.testerCouleurCoinDisponible = function(couleur){
+    this.testerCouleurCoinDisponible = function (couleur) {
         var retour = false;
 
-        if((plateau[0][0] == couleur) || (plateau[0][5] == couleur) || (plateau[5][0] == couleur) || (plateau[5][5] == couleur))
-        {
+        if ((plateau[0][0] == couleur) || (plateau[0][5] == couleur) || (plateau[5][0] == couleur) || (plateau[5][5] == couleur)) {
             retour = true;
-            console.log("La couleur "+couleur+" est disponible");
+            console.log("La couleur " + couleur + " est disponible");
         }
         else
-            console.log("La bille de couleur "+couleur+" n'est pas disponible");
+            console.log("La bille de couleur " + couleur + " n'est pas disponible");
 
         return retour;
     };
 
     function billeDisponibleALaSelection() {
 
-        var couleurDispo = new Array();  // Listes des couleurs pouvant être enlever
-        var listeBilleEnlevable = new Array(); // Listes des billes pouvant être enlever
+        var couleurDispo = new Array();  // Listes des couleurs pouvant ï¿½tre enlever
+        var listeBilleEnlevable = new Array(); // Listes des billes pouvant ï¿½tre enlever
 
-        for(var i = 0; i < plateau.length ; i++)
-        {
-            for(var o = 0; o < 6 ; o++)
-            {
-                if(plateau[i][o] != "o") {
+        for (var i = 0; i < plateau.length; i++) {
+            for (var o = 0; o < 6; o++) {
+                if (plateau[i][o] != "o") {
                     var nbbille = RecupListBilleVoisine(String.fromCharCode(i + 97, o + 49)).length;
                     if (nbbille < 3) {
                         couleurDispo.push(plateau[i][o]);
@@ -169,21 +163,20 @@ var Engine = function(){
             }
         }
 
-        AfficherBilleDisponibleSelection(couleurDispo , listeBilleEnlevable);
+        AfficherBilleDisponibleSelection(couleurDispo, listeBilleEnlevable);
 
         return listeBilleEnlevable;
     };
 
-    function AfficherBilleDisponibleSelection(couleurDispo , listeBilleEnlevable) {
+    function AfficherBilleDisponibleSelection(couleurDispo, listeBilleEnlevable) {
         console.log("");
         console.log("BILLE DISPONIBLE A LA SELECTION");
-        for(var u = 0; u<couleurDispo.length ; u++)
-        {
-            console.log("-- "+couleurDispo[u] +" " + listeBilleEnlevable[u]);
+        for (var u = 0; u < couleurDispo.length; u++) {
+            console.log("-- " + couleurDispo[u] + " " + listeBilleEnlevable[u]);
         }
     }
 
-    function RecupListBilleVoisine(position){
+    function RecupListBilleVoisine(position) {
         var x = position.charCodeAt(0) - 97;// a
         var y = position.charCodeAt(1) - 49;// 1
 
@@ -191,32 +184,32 @@ var Engine = function(){
 
         if (x > 0) {
             if (plateau[x - 1][y] != "o") {
-            listeBilleVoisine.push(String.fromCharCode(x-1+97)+""+(y+1)+":"+plateau[x-1][y] );
+                listeBilleVoisine.push(String.fromCharCode(x - 1 + 97) + "" + (y + 1) + ":" + plateau[x - 1][y]);
             }
         }
 
         if (x < 5) {
             if (plateau[x + 1][y] != "o") {
-            listeBilleVoisine.push(String.fromCharCode(x+1+97)+""+(y+1)+":"+plateau[x+1][y] );
+                listeBilleVoisine.push(String.fromCharCode(x + 1 + 97) + "" + (y + 1) + ":" + plateau[x + 1][y]);
             }
         }
 
         if (y > 0) {
             if (plateau[x][y - 1] != "o") {
-            listeBilleVoisine.push(String.fromCharCode(x+97)+""+(y-1+1)+":"+plateau[x][y-1] );
+                listeBilleVoisine.push(String.fromCharCode(x + 97) + "" + (y - 1 + 1) + ":" + plateau[x][y - 1]);
             }
         }
 
         if (y < 5) {
             if (plateau[x][y + 1] != "o") {
-            listeBilleVoisine.push(String.fromCharCode(x+97)+""+(y+1+1)+":"+plateau[x][y+1] );
+                listeBilleVoisine.push(String.fromCharCode(x + 97) + "" + (y + 1 + 1) + ":" + plateau[x][y + 1]);
             }
         }
 
         return listeBilleVoisine;
     };
 
-    this.EnleverBille = function(position , joueur) {
+    this.EnleverBille = function (position, joueur) {
         var x = position.charCodeAt(0) - 97;
         var y = position.charCodeAt(1) - 49;
 
@@ -224,60 +217,55 @@ var Engine = function(){
 
         var ListeBilleDisponibleSelection = billeDisponibleALaSelection();
 
-        if(ListeBilleDisponibleSelection.indexOf(position) != -1)
-        {
+        if (ListeBilleDisponibleSelection.indexOf(position) != -1) {
             /////////////////// ESSAI
-            // On recupere la liste des bille voisine à la bille principale
-            var ListeBilleVoisinePrincipal =   RecupListBilleVoisine(position);
-                for(var p = 0; p < ListeBilleVoisinePrincipal.length ; p++){
-                    console.log(("BILLE VOISINE DISPO "+ListeBilleVoisinePrincipal[p]));
-                }
+            // On recupere la liste des bille voisine ï¿½ la bille principale
+            var ListeBilleVoisinePrincipal = RecupListBilleVoisine(position);
+            for (var p = 0; p < ListeBilleVoisinePrincipal.length; p++) {
+                console.log(("BILLE VOISINE DISPO " + ListeBilleVoisinePrincipal[p]));
+            }
 
             var nbBilleEnCommun = 0;
             var EstBillePillier = false;
 
-            if(ListeBilleVoisinePrincipal.length == 2)
-            {
-                // On recupère les billes voisines des voisines de la bille principale
-                var voisin1 = RecupListBilleVoisine(ListeBilleVoisinePrincipal[0].charAt(0)+""+ListeBilleVoisinePrincipal[0].charAt(1));
-                var voisin2 = RecupListBilleVoisine(ListeBilleVoisinePrincipal[1].charAt(0)+""+ListeBilleVoisinePrincipal[1].charAt(1));
+            if (ListeBilleVoisinePrincipal.length == 2) {
+                // On recupï¿½re les billes voisines des voisines de la bille principale
+                var voisin1 = RecupListBilleVoisine(ListeBilleVoisinePrincipal[0].charAt(0) + "" + ListeBilleVoisinePrincipal[0].charAt(1));
+                var voisin2 = RecupListBilleVoisine(ListeBilleVoisinePrincipal[1].charAt(0) + "" + ListeBilleVoisinePrincipal[1].charAt(1));
 
-                for(var p = 0; p < voisin1.length ; p++){
-                    console.log(("VOISIN 1 +"+ListeBilleVoisinePrincipal[0]+" :"+voisin1[p]));
+                for (var p = 0; p < voisin1.length; p++) {
+                    console.log(("VOISIN 1 +" + ListeBilleVoisinePrincipal[0] + " :" + voisin1[p]));
                 }
-                for(var p = 0; p < voisin2.length ; p++){
-                    console.log(("VOISIN 2 +"+ListeBilleVoisinePrincipal[1]+" :"+voisin2[p]));
+                for (var p = 0; p < voisin2.length; p++) {
+                    console.log(("VOISIN 2 +" + ListeBilleVoisinePrincipal[1] + " :" + voisin2[p]));
                 }
 
                 var NbPlusGrandeExploiration; // On prend la solution qui a le plus de bille voisine
 
-                if(voisin1.length > voisin2)
+                if (voisin1.length > voisin2)
                     NbPlusGrandeExploiration = voisin1.length;
                 else
                     NbPlusGrandeExploiration = voisin2.length;
 
-                // On viens comparé les 2 listes des billes voisines à la bille principale ou voir si il y a des doublons
-                for(var ind = 0; ind < NbPlusGrandeExploiration; ind++)
-                {
-                    if(voisin1.indexOf(voisin2[ind]) != -1) // Si une bille est commune au 2 voisinage
+                // On viens comparï¿½ les 2 listes des billes voisines ï¿½ la bille principale ou voir si il y a des doublons
+                for (var ind = 0; ind < NbPlusGrandeExploiration; ind++) {
+                    if (voisin1.indexOf(voisin2[ind]) != -1) // Si une bille est commune au 2 voisinage
                     {
-                        if(voisin2[ind] != (position+":"+plateau[x][y]))
-                        {
-                            console.log("--------VOSIIN:("+voisin2[ind]+")    POSI:("+position+":"+plateau[x][y]+")");
+                        if (voisin2[ind] != (position + ":" + plateau[x][y])) {
+                            console.log("--------VOSIIN:(" + voisin2[ind] + ")    POSI:(" + position + ":" + plateau[x][y] + ")");
                             nbBilleEnCommun++;
                             console.log("Bille commun" + voisin2[ind]);
                         }
                     }
                 }
 
-                if(nbBilleEnCommun == 0)
-                {
+                if (nbBilleEnCommun == 0) {
                     EstBillePillier = true;
                 }
 
 
             }
-            if(!EstBillePillier)// Dans les 2 voisinages, il faut a tout pris 2 billes en commun, seule que l'on souhaite
+            if (!EstBillePillier)// Dans les 2 voisinages, il faut a tout pris 2 billes en commun, seule que l'on souhaite
             // celle que l'on souhaite enlever et une autre. Sinon la bille est une bille pallier
             {
 
@@ -296,24 +284,22 @@ var Engine = function(){
                 }
                 else {
                     retour = false;
-                    console.log("La case est déjà vide");
+                    console.log("La case est dï¿½jï¿½ vide");
 
                 }
 
-            }else
-            {
+            } else {
                 retour = false;
                 console.log("La bille ne peut pas etre enlevee, c'est une bille pillier");
             }
         }
-        else
-        {
+        else {
             console.log("LA BILLE N'EST PAS LA LISTE DES BILLES DISPO");
         }
         return retour;
     };
 
-    this.AfficheNbBilleJoueur = function(joueur) {
+    this.AfficheNbBilleJoueur = function (joueur) {
 
         var noir = 0;
         var vert = 0;
@@ -324,49 +310,96 @@ var Engine = function(){
 
         var chaineNbBilleJoueur = "";
 
-        if(joueur == 1)
+        if (joueur == 1)
             chaineNbBilleJoueur = joueur1.split(";");
 
-        if(joueur == 2)
+        if (joueur == 2)
             chaineNbBilleJoueur = joueur2.split(";");
 
-        for(var i = 0; i < chaineNbBilleJoueur.length ; i++)
-        {
-            if(chaineNbBilleJoueur[i] == "N")
+        for (var i = 0; i < chaineNbBilleJoueur.length; i++) {
+            if (chaineNbBilleJoueur[i] == "N")
                 noir++;
 
-            if(chaineNbBilleJoueur[i] == "G")
+            if (chaineNbBilleJoueur[i] == "G")
                 vert++;
 
-            if(chaineNbBilleJoueur[i] == "W")
+            if (chaineNbBilleJoueur[i] == "W")
                 blanc++;
 
-            if(chaineNbBilleJoueur[i] == "B")
+            if (chaineNbBilleJoueur[i] == "B")
                 bleu++;
 
-            if(chaineNbBilleJoueur[i] == "R")
+            if (chaineNbBilleJoueur[i] == "R")
                 rouge++;
 
-            if(chaineNbBilleJoueur[i] == "Y")
+            if (chaineNbBilleJoueur[i] == "Y")
                 jaune++;
         }
-        console.log("Le joueur "+joueur+ " a  N:"+noir+" G:"+vert+" W:"+blanc+" B:"+bleu+" R:"+rouge+ " Y:"+jaune);
+
+        VerificationSiGagnant(joueur);
+
+        console.log("Le joueur " + joueur + " a  N:" + noir + " G:" + vert + " W:" + blanc + " B:" + bleu + " R:" + rouge + " Y:" + jaune);
     };
 
-    this.VerificationJoueurGagnant = function(joueur){
+    function VerificationSiGagnant(joueurEnCour) {
+
+        var black = 0;
+        var green = 0;
+        var white = 0;
+        var blue = 0;
+        var red = 0;
+        var yellow = 0;
+
+        var chaineNbBilleJoueur = joueur1 + "" + joueur2; // On concatï¿½ne pour optimiser l'algo
+        var chaineDecoup = chaineNbBilleJoueur.split(";");
+
+        for (var i = 0; i < chaineDecoup.length; i++) {
+            if (chaineDecoup[i] == "N")
+                black++;
+
+            if (chaineDecoup[i] == "G")
+                green++;
+
+            if (chaineDecoup[i] == "W")
+                white++;
+
+            if (chaineDecoup[i] == "B")
+                blue++;
+
+            if (chaineDecoup[i] == "R")
+                red++;
+
+            if (chaineDecoup[i] == "Y")
+                yellow++;
+        }
+
+        if (black == 6 || (green == 6) || (white == 6) || (blue == 6) || (red == 6) || (yellow == 6)) {
+            joueurGagnantPartie = joueurEnCour;
+            console.log("");
+            console.log("");
+            console.log("------(FIN DE LA PARTIE) Le joueur "+ joueurGagnantPartie + " a gagner !!! -------");
+            console.log("");
+            console.log("");
+        }
+    }
+
+    this.VerificationJoueurGagnant = function (joueur) {
+        console.log("joueur gagnant " + joueurGagnantPartie);
+        if (joueurGagnantPartie == joueur)
+            return true;
+        else
+            return false;
     };
 
-    function AfficheJeu(){
+    function AfficheJeu() {
         var ligne = "";
-        for(var i = 0; i < 6 ; i++)
-        {
-            if(i==3)
+        for (var i = 0; i < 6; i++) {
+            if (i == 3)
                 console.log(" ");
-            for(var o = 0; o < 6 ; o++)
-            {
-                if(o == 3)
-                    ligne = ligne +" ";
-                ligne =  ligne + "["+plateau[o][i]+"]";
+            for (var o = 0; o < 6; o++) {
+                if (o == 3)
+                    ligne = ligne + " ";
+                ligne = ligne + "[" + plateau[o][i] + "]";
             }
             console.log(ligne);
             ligne = "";

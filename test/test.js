@@ -111,9 +111,10 @@ PalettoTestCase.prototype.testHistoire6 = function(){
     console.log("");
     console.log("-------------------  J1  -----------------------");
     assertTrue(monPlateau1.EnleverBille("b5", 1));//b4
+        assertTrue(monPlateau1.EnleverBille("b4", 1));// CORRECTION BUG ENONCE TP
     assertTrue(monPlateau1.EnleverBille("c6", 1));
     assertTrue(monPlateau1.EnleverBille("d5", 1));
     assertTrue(monPlateau1.EnleverBille("e3", 1));
 
-    assertTrue(monPlateau.VerificationJoueurGagnant(1));
+    assertTrue(monPlateau1.VerificationJoueurGagnant(1));
 };
